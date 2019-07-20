@@ -1,0 +1,84 @@
+#pyautogui automation - for pocket trains
+
+import cv2
+import numpy as np
+import pyautogui
+import random
+import time
+import sys
+
+pyautogui.FAILSAFE = True
+
+def imagesearch(image,xadd,yadd, precision=0.7):
+    im = pyautogui.screenshot()
+    im.save("anothertest.png")
+    #im.save('testarea.png') usefull for debugging purposes, this will save the captured region as "testarea.png"
+    img_rgb = np.array(im)
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    template = cv2.imread(image, 0)
+    template.shape[::-1]
+
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    
+    if max_val < precision:
+        return [-1,-1]
+    
+    pyautogui.moveTo(max_loc[0] + xadd, max_loc[1] + yadd)
+    pyautogui.click()
+    
+    return(max_loc)
+
+def imagesearch_loop(image, timesample, precision=0.7):
+    global pos
+    pos = imagesearch(image, precision)
+    while pos[0] == -1:
+        print(image+" not found, waiting")
+        time.sleep(timesample)
+        pos = imagesearch(image)
+    return pos
+
+def click_image(pos, xadd,yadd):
+    pyautogui.moveTo(pos[0] +x, pos[1]+y)
+    pyautogui.click()
+
+
+def imagesearch_numLoop(image, timesample, maxSamples, xadd, yadd, precision=0.7):
+    global pos
+    pos = imagesearch(image, xadd, yadd, precision)
+    
+    count = 0
+    while pos[0] == -1:
+        print(image+" not found, waiting")
+        time.sleep(timesample)
+        pos = imagesearch(image, xadd, yadd, precision)
+        count = count + 1
+        if count==maxSamples:
+            sys.exit()
+    return pos
+
+#4 types of arrows
+def order():
+    '''
+    imagesearch_numLoop('diag_up.png', 0.5,1,90,-75)
+    imagesearch_numLoop('right.png', 0.5,1,150,20)
+    imagesearch_numLoop('down.png', 0.5,1, 20, 120)
+    imagesearch_numLoop('betterright.png', 0.5,1,150,20)
+    imagesearch_numLoop('up.png', 0.5,1,40,-35)
+    '''
+
+
+    for x in range(1,10):
+        imagesearch_numLoop((str(x)+'.png'), 0.2, 2, 10, 10)
+
+    imagesearch_numLoop('realright.png', 0.2, 2, 200, 10)
+    
+    for x in range(10,14):
+        imagesearch_numLoop((str(x)+'.png'), 0.2, 2, 10, 10)
+
+    pyautogui.click()
+
+    
+order()
+
+print("done")
