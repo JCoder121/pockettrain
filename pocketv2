@@ -1,0 +1,283 @@
+#second pocket
+#strictly pyautogui moveTo positions and click
+#code: 16QYK0
+#possible exploit for #3: send the things, delete the account
+#quit bluestacks, reopen, then resend immediately (data should be saved)
+#need to confirm if this works with the send
+
+
+import cv2
+import numpy as np
+import pyautogui
+import random
+import time
+import sys
+
+
+def imagesearch(image, precision=0.7):
+    global one
+    im = pyautogui.screenshot()
+    im.save("anothertest.png")
+    #im.save('testarea.png') usefull for debugging purposes, this will save the captured region as "testarea.png"
+    img_rgb = np.array(im)
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    template = cv2.imread(image, 0)
+    template.shape[::-1]
+
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    
+    if max_val < precision:
+        return [-1,-1]
+
+    pyautogui.click(max_loc[0] + 25, max_loc[1] +25)
+    one = 15
+    return (max_loc)
+
+def imagesearch_numLoop(image, timesample, maxSamples, precision=0.7):
+    global one
+    count = 0
+    while (imagesearch(image, precision)):
+        if one == 15:
+            break
+        print(image+" not found, waiting")
+        time.sleep(timesample)
+        pos = imagesearch(image, precision)
+        count = count + 1
+        if count==maxSamples:
+            sys.exit()
+    return
+
+#the automation until allows mouse control back 
+def order1():
+    print("clear")
+    time.sleep(1)
+    print("2")
+    time.sleep(1)
+    print("1")
+    time.sleep(1)
+
+    pyautogui.click(1250, 165)
+    time.sleep(0.4)
+    pyautogui.click(450, 200)
+    time.sleep(0.4)
+    pyautogui.click(250, 700)
+    time.sleep(0.4)
+    pyautogui.click(950, 200)
+    time.sleep(0.4)
+    pyautogui.click(470, 487)
+    time.sleep(0.4)
+    pyautogui.click(250, 700)
+    time.sleep(0.4)
+    pyautogui.click(970, 175)
+    time.sleep(0.4)
+    pyautogui.click(250, 700)
+    time.sleep(0.4)
+    pyautogui.click(950, 200)
+    time.sleep(0.4)
+    pyautogui.click(950, 300)
+    time.sleep(0.4)
+    pyautogui.click(445, 310)
+    time.sleep(0.4)
+    pyautogui.click(250, 700)
+    time.sleep(0.4)
+    pyautogui.click(690, 675)
+    time.sleep(0.4)
+    pyautogui.click(850, 600)
+    time.sleep(0.4)
+    pyautogui.click()
+    print('done with 1')
+
+#will just be the mouse control areas, 4 clicks
+def order2():
+
+    pyautogui.click(977, 186)
+    time.sleep(0.4)
+    pyautogui.click(682, 680)
+    time.sleep(0.4)
+    pyautogui.click(860, 600)
+    time.sleep(0.4)
+    pyautogui.click(718, 607)
+    time.sleep(0.4)
+    print('done with 2')
+    
+
+#the last arrow-pointing segment
+def order3():
+    print("clear")
+    time.sleep(1)
+    print("2")
+    time.sleep(1)
+    print("1")
+    time.sleep(1)
+
+    pyautogui.click(1050, 700)
+    time.sleep(0.4)
+    pyautogui.click(617, 461)
+    time.sleep(0.4)
+    pyautogui.click(816, 600)
+    time.sleep(0.4)
+    pyautogui.click(1210, 695)
+    time.sleep(0.4)
+    pyautogui.click(1210, 695)
+    time.sleep(0.4)
+    pyautogui.click(576, 420)
+    time.sleep(0.4)
+    pyautogui.click(1000, 481)
+    time.sleep(0.4)
+    pyautogui.click(700, 600)
+    time.sleep(0.4)
+    pyautogui.click(500, 700)
+    time.sleep(0.4)
+    pyautogui.click(200, 185)
+    time.sleep(0.4)
+    pyautogui.click(876, 615)
+    time.sleep(0.4)
+    pyautogui.click(876, 615)
+    time.sleep(0.4)
+    pyautogui.click(737, 693)
+    time.sleep(0.4)
+    pyautogui.click(1200,700)
+    time.sleep(0.4)
+    pyautogui.click(1200, 700)
+    time.sleep(0.4)
+    pyautogui.click(578, 244)
+    time.sleep(0.4)
+    pyautogui.click(475, 225)
+    time.sleep(0.4)
+    pyautogui.click(900, 600)
+    time.sleep(0.4)
+    pyautogui.click(725, 600)
+    time.sleep(0.4)
+    pyautogui.click(543, 458)
+    time.sleep(0.4)
+    pyautogui.click(970, 175)
+    time.sleep(0.4)
+    pyautogui.click(700, 600)
+    time.sleep(0.4)
+    pyautogui.click(250, 700)
+    time.sleep(0.4)
+    pyautogui.click(681, 416)
+    time.sleep(0.4)
+    pyautogui.click(890, 605)
+    time.sleep(0.4)
+    pyautogui.click(242, 690)
+    time.sleep(0.4)
+    pyautogui.click()
+    print('done with 3')
+    
+
+#uncrate and quit, and reopen bluestacks
+def order4():
+    print("clear")
+    time.sleep(1)
+    print("2")
+    time.sleep(1)
+    print("1")
+    time.sleep(1)
+
+    pyautogui.click(1200, 700)
+    time.sleep(0.4)
+    pyautogui.click(575, 430)
+    time.sleep(0.4)
+    pyautogui.click(435, 490)
+    time.sleep(0.4)
+    pyautogui.click(718, 606)
+    time.sleep(0.4)
+    pyautogui.click(1000, 480)
+    time.sleep(0.4)
+    pyautogui.click(718, 606)
+    time.sleep(1)
+    pyautogui.click(163, 130)
+    time.sleep(0.5)
+    pyautogui.click(870, 311)
+    print("now time to wait...")
+    time.sleep(200)
+    imagesearch_numLoop('blue.png', 0.1, 3)
+    imagesearch_numLoop('trainicon.png', 1, 100)
+    time.sleep(8)
+    print('done with 4')
+    
+    
+
+#gift the parts, then reset
+def order5():
+    pyautogui.click(1200, 700)
+    time.sleep(0.4)
+    pyautogui.click(575, 420)
+    time.sleep(0.4)
+    pyautogui.click(500, 700)
+    time.sleep(0.4)
+    pyautogui.click(420, 180)
+    time.sleep(0.4)
+    #press gift button
+    pyautogui.click(880, 600)
+    time.sleep(0.4)
+    pyautogui.click(720, 395)
+    time.sleep(0.4)
+    pyautogui.typewrite("16QYK0")
+    pyautogui.click(880, 600)
+    time.sleep(2)
+    pyautogui.click(720, 600)
+    time.sleep(0.4)
+    pyautogui.click(420, 270)
+    time.sleep(0.4)
+    pyautogui.click(880, 600)
+    time.sleep(0.4)
+    pyautogui.click(880, 600)
+    time.sleep(2)
+    pyautogui.click(720, 600)
+    time.sleep(0.4)
+    pyautogui.click(1220, 700)
+    time.sleep(6)
+    auto_reset()
+    print('done with 5')
+
+def auto_reset():
+    print("clear")
+    time.sleep(1)
+    print("2")
+    time.sleep(1)
+    print("1")
+    time.sleep(1)
+
+    pyautogui.click(1200, 700)
+    time.sleep(0.4)
+    pyautogui.click(280,240)
+    time.sleep(0.4)
+    pyautogui.click(720, 570)
+    time.sleep(0.4)
+    pyautogui.click(850, 600)
+    time.sleep(0.4)
+    pyautogui.click(850, 600)
+
+
+#loop of everything when finished
+#friend code issue, also order is wrong
+def execute_order_66():
+    order1()
+    order2()
+    order3()
+    order4()
+    order5()
+
+
+auto_reset()
+order1()
+order2()
+order3()
+'''
+while True:
+    time.sleep(1.5)
+    print(pyautogui.position())
+'''
+'''
+my_input = input("start? y or n: ")
+if my_input == 'Y' or my_input == 'y':
+    order1()
+        
+else:
+    print("Youre trash")
+'''
+
+print('done yay')
