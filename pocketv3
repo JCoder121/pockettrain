@@ -1,0 +1,159 @@
+#so there is an exploit, send the gift, then reset but do not complete
+#then quit bluestacks and the part comes back, resend
+
+#third pocket
+#code: 16QYK0
+
+import cv2
+import numpy as np
+import pyautogui
+import random
+import time
+import sys
+
+
+def imagesearch(image, precision=0.7):
+    
+    im = pyautogui.screenshot()
+    im.save("anothertest.png")
+    #im.save('testarea.png') usefull for debugging purposes, this will save the captured region as "testarea.png"
+    img_rgb = np.array(im)
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    template = cv2.imread(image, 0)
+    template.shape[::-1]
+
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    
+    if max_val < precision:
+        return [-1,-1]
+
+    pyautogui.click(max_loc[0] + 25, max_loc[1] +25)
+    return (False)
+
+def imagesearch_numLoop(image, timesample, maxSamples, precision=0.7):
+    while (imagesearch(image, precision)):
+        print(image+" not found, waiting")
+        time.sleep(timesample)
+        pos = imagesearch(image, precision)
+
+#gift parts, reset bluestacks
+def order1():
+    print("clear")
+    time.sleep(0.5)
+    print("1")
+    time.sleep(0.5)
+    #click menu
+    pyautogui.click(1200, 700)
+    time.sleep(0.3)
+    #click craft
+    pyautogui.click(575, 420)
+    time.sleep(0.3)
+    #click parts
+    pyautogui.click(500, 700)
+    time.sleep(0.3)
+    #this is for the second gift train slot
+    #pyautogui.click(420, 270)
+    #this is for the third gift train slot
+    pyautogui.click(420, 343)
+    time.sleep(0.3)
+    #press gift button (are you sure ___ for __ bux)
+    pyautogui.click(880, 600)
+    time.sleep(0.3)
+    #press the field where user enters code
+    pyautogui.click(720, 395)
+    time.sleep(0.3)
+    pyautogui.typewrite("16QYK0")
+    time.sleep(0.3)
+    #press the space where send is (exit typing field)
+    pyautogui.click(880, 600)
+    time.sleep(1)
+    #press send
+    pyautogui.click(880, 600)
+    time.sleep(1)
+    #press continue prompt that pops up
+    pyautogui.click(720, 600)
+    time.sleep(1)
+    #press the x to return to train menu
+    pyautogui.click(1200, 700)
+    time.sleep(0.5)
+    #go into reset
+    auto_reset()
+    time.sleep(0.3)
+
+    pyautogui.click(1250, 165)
+    
+    #print('done with 1')
+
+#reopen bluestacks and ready to restart
+def order2():
+    print("clear")
+    time.sleep(0.5)
+
+    #this is pressing x on pocket trains tab with 3 tabs open
+    #if 2 tabs open: x = 510 ish
+    #x the tab
+    pyautogui.click(815, 126) 
+    time.sleep(1.5)
+    #press the icon switcher
+    pyautogui.click(856, 778)
+    time.sleep(1)
+    #need to be nothing else in the task switcher, only trains open, x it out
+    pyautogui.click(958, 272)
+    time.sleep(0.5)
+    #click outside the field, exit task switcher
+    pyautogui.click(1100, 400)
+    time.sleep(0.5)
+    #open application
+    pyautogui.click(300, 200)
+    time.sleep(2)
+    #congratulations you earned box (temporary, can use in place of munich search)
+    imagesearch_numLoop('continue.png', 0.5, 10)
+    #time.sleep(0.3)
+    #wait for train home menu to pop up
+    #imagesearch_numLoop('munichtrain.png',0.5,20)
+    
+    #print('done with 2')
+
+def auto_reset():
+    print("clear")
+
+    #click menu
+    pyautogui.click(1200, 700)
+    time.sleep(0.2)
+    #click options
+    pyautogui.click(280,240)
+    time.sleep(0.2)
+    #click delete
+    pyautogui.click(720, 570)
+    time.sleep(0.2)
+    #click yes
+    pyautogui.click(850, 600)
+    time.sleep(0.2)
+    #confirm yes
+    pyautogui.click(850, 600)
+
+def execute_order_66():
+    order1()
+    order2()
+
+for x in range(1,20):
+    execute_order_66()
+    print("SENT", x , "PARTS")
+
+#imagesearch_numLoop('munich.png', 1, 30)
+'''
+while True:
+    print(pyautogui.position())
+    time.sleep(1)
+'''
+#order to process:
+'''
+opens with the regular screen
+gift friend
+immediately reset
+click once on the tutorial
+quit bluestacks and reopen
+'''
+
+print('done yay')
